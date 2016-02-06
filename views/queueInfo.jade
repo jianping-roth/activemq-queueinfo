@@ -1,0 +1,18 @@
+extends layout
+
+block content
+
+  div
+      h1.
+        Queue Info
+
+      table
+        thead
+          tr
+          each item, i in attributes
+            th #{item}
+        tbody
+        each queue, i in queueList
+          tr
+          each attr, j in attributes
+            td #{queue[attr]}

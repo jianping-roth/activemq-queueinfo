@@ -1,0 +1,28 @@
+body {
+  padding: 30px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+table, th, td {
+  border: 1px solid #00cccc;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th {
+  height: 50px;
+  background-color: #99cc00;
+  color: white;
+}
+
+h1 {
+  background-image: url("/images/queue.jpeg");
+  background-repeat: repeat-x;
+  height: 140px;
+  margin-bottom: 0;
+  text-align: center;
+}
