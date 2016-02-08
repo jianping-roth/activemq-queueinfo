@@ -6,13 +6,30 @@ block content
       h1.
         Queue Info
 
-      table
-        thead
-          tr
-          each item, i in attributes
-            th #{item}
-        tbody
-        each queue, i in queueList
-          tr
-          each attr, j in attributes
-            td #{queue[attr]}
+      form(action='/host',method='post')
+          div(id='inputs')
+            label(for='host') Your Node IP/Name:
+            input(type="text", id="host", value=host, placeholder="Your node ip/name", name="host")
+            label(for='port') Your Node JMX port:
+            input(type="text", id="port", value=port, placeholder="Your node JMX port", name="port")
+            input(type='submit', value='Get Queue Info')
+            if (error == true)
+                label(class='fadein') Cannot connect to the node
+          table
+            thead
+              tr
+              each item, i in attributes
+                th #{item}
+            tbody
+            each queue, k in queueList
+              if (k % 2 == 0)
+                tr(class='even')
+              else
+                tr(class='odd')
+
+              each attr, j in attributes
+                if (j == 0)
+                  td(class='first') #{queue[attr]}
+                else
+                  td #{queue[attr]}
+

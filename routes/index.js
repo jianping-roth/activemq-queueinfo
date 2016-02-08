@@ -2,23 +2,32 @@ var express = require('express');
 var jmx = require("jmx");
 var router = express.Router();
 var Q = require("q");
-var sorto = require('sorto')
-
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'ActiveMQ Queue Properties' });
-});
 
 attributes = ["QueueSize", "InFlightCount", "EnqueueCount", "DequeueCount", "ExpiredCount",
   "MaxEnqueueTime", "MinEnqueueTime", "ConsumerCount"];
 
-router.get('/queueInfo', function(req, res) {
-  retrieveBeanInfo(function(queueInfo) {
+var host = "localhost";
+var port = "9500";
+var error = false;
+
+router.post('/host', function(req, res) {
+  console.log("new host:" + req.body.host + " new port:" + req.body.port);
+  host = req.body.host;
+  port = req.body.port;
+  res.redirect("/");
+});
+
+router.get('/', function(req, res) {
+  retrieveBeanInfo(host, function(queueInfo) {
+    error = queueInfo.length == 0;
     res.render('queueInfo', {
       "queueList": queueInfo.sort(function(o1, o2) {
           return o1.name.localeCompare(o2.name);
       }),
-      "attributes" : ["name"].concat(attributes)
+      "attributes" : ["name"].concat(attributes),
+      "port" : port,
+      "host" : host,
+      "error" : error
     });
   });
 });
@@ -70,9 +79,9 @@ var extractQueues = function(beans) {
   return allBeans;
 }
 
-function retrieveBeanInfo(callback) {
+function retrieveBeanInfo(host, callback) {
   client = jmx.createClient({
-    service: "service:jmx:rmi:///jndi/rmi://localhost:9500/jmxrmi"
+    service: "service:jmx:rmi:///jndi/rmi://".concat(host).concat(":").concat(port).concat("/jmxrmi")
   });
 
   client.connect();
@@ -93,6 +102,11 @@ function retrieveBeanInfo(callback) {
       }
     });
   });
+
+  client.on("error", function (err) {
+    console.log(err);
+    callback([]);
+  })
 }
 
 module.exports = router;
