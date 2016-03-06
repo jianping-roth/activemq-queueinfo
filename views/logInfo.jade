@@ -1,0 +1,51 @@
+extends layout
+
+block content
+
+  div
+      h1.
+        Queue Info
+
+      form(action='/host',method='post')
+          div(id='inputs')
+            label(for='host') Your Node IP/Name:
+            input(type="text", id="host", value=host, placeholder="Your node ip/name", name="host")
+            label(for='port') Your Node JMX port:
+            input(type="text", id="port", value=port, placeholder="Your node JMX port", name="port")
+            input(type='submit', value='Get Log Configuration')
+            if (error == true)
+                label(class='fadein') Cannot connect to the node
+          table
+            thead
+              tr
+              each item, i in attributes
+                th #{item}
+            tbody
+            each log, k in logs
+              if (k % 2 == 0)
+                tr(class='even')
+              else
+                tr(class='odd')
+
+              each attr, j in attributes
+                if (j == 0)
+                  if (attr == 'Name')
+                    td(class='first', id='log'+k) #{log.Name}
+                  else
+                    td(class='first')
+                      select(id="level"+k, name="level"+k)
+                        for level in levels
+                          option(selected=log[attr] == level) #{level}
+                else
+                  if (attr == 'Name')
+                    td(id='log'+k) #{log.Name}
+                  else
+                    td
+                      select(id="level"+k, name="level"+k)
+                        for level in levels
+                          option(selected=log[attr] == level) #{level}
+
+  script(type='text/javascript').
+        $(document).ready(function() {
+
+                            });

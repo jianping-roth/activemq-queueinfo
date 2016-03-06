@@ -1,5 +1,18 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+
+  form(action='/host',method='post')
+    div.tabs
+      label(for='tab1')
+          span Queues
+      label(for='tab2')
+          span Log Configuration
+
+      input#tab1(name='tabs', type='radio', checked)
+      div.tab-content#tab-content1
+           p queue info goes here
+
+      input#tab2(name='tabs', type='radio')
+      div.tab-content#tab-content2
+          p log config goes here
