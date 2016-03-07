@@ -3,11 +3,11 @@ extends layout
 block content
 
   div
-      h1.
+      h1(class='queue').
         Queue Info
 
-      form(action='/host',method='post')
-          div(id='inputs')
+      form(action='/queues/host',method='post')
+          div(class='inputs')
             label(for='host') Your Node IP/Name:
             input(type="text", id="host", value=host, placeholder="Your node ip/name", name="host")
             label(for='port') Your Node JMX port:

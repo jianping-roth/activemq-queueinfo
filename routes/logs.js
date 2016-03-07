@@ -8,12 +8,23 @@ levels = ["ERROR", "WARN", "INFO", "DEBUG", "TRACE", "OFF"]
 var host = "localhost";
 var port = "9500";
 var error = false;
+var client;
 
+var constants = {
+    beanName: "xmatters.log:type=logging,name=config"
+}
 router.post('/host', function(req, res) {
     console.log("new host:" + req.body.host + " new port:" + req.body.port);
     host = req.body.host;
     port = req.body.port;
     res.redirect("/logconfig");
+});
+
+router.post('/update', function(req, res) {
+    console.log("new host:" + req.body.level + " new port:" + req.body.logger);
+    setLogLevel(client, req.body.logger, req.body.level).then(function() {
+        res.redirect("/logconfig");
+    });
 });
 
 router.get('/', function(req, res) {
@@ -22,7 +33,9 @@ router.get('/', function(req, res) {
         res.render('logInfo', {
             "attributes": attributes,
             "levels" : levels,
-            "logs": logs,
+            "logs": logs.sort(function(o1, o2) {
+                return o1.Name.localeCompare(o2.Name);
+            }),
             "port" : port,
             "host" : host,
             "error" : error
@@ -30,9 +43,18 @@ router.get('/', function(req, res) {
     });
 });
 
+var setLogLevel = function(client, logger, level) {
+    var deferred = Q.defer();
+    client.invoke(constants.beanName, "setLogLevel", [logger, level],
+        function() {
+            deferred.resolve();
+        });
+    return deferred.promise;
+};
+
 var retrieveLogs = function(client) {
     var deferred = Q.defer();
-    client.invoke("xmatters.log:type=logging,name=config", "getLoggers", null,
+    client.invoke(constants.beanName, "getLoggers", null,
         function(logs) {
             deferred.resolve(logs);
         });

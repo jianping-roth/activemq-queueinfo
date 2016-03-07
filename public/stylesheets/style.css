@@ -19,7 +19,18 @@ th {
   color: white;
 }
 
-h1 {
+.log {
+  background-image: url("/images/log.jpg");
+  background-repeat: repeat-x;
+  height: 120px;
+  margin-bottom: 15px;
+  text-align: center;
+  vertical-align: middle;
+  color: #65B5D6;
+  line-height: 120px;
+}
+
+.queue {
   background-image: url("/images/queue.jpeg");
   background-repeat: repeat-x;
   height: 140px;
@@ -38,18 +49,29 @@ tr.odd {
   color: #CCC900;
 }
 
-#inputs {
+.inputs {
   margin-bottom: 10px;
 }
 
 label {
   color: #2082A2;
   margin-right: 5px;
+  display: inline-block;
+  width: 13%;
 }
 
 input {
   color: #535758;
   margin-right: 10px;
+  display: inline-block;
+}
+
+.col1 {
+  width: 37%;
+}
+
+.col2 {
+  width: 10%;
 }
 
 input[type=submit] {
@@ -60,6 +82,8 @@ input[type=submit] {
   color: #2082A2;
   -webkit-border-radius: 5px;
   border-radius: 5px;
+  display: inline-block;
+  width: 13%;
 }
 
 .fadein {

@@ -3,18 +3,27 @@ extends layout
 block content
 
   div
-      h1.
-        Queue Info
+      h1(class='log').
+        Log Configuration
 
-      form(action='/host',method='post')
-          div(id='inputs')
+      form(action='/logConfig/host',method='post')
+          div(class='inputs')
             label(for='host') Your Node IP/Name:
-            input(type="text", id="host", value=host, placeholder="Your node ip/name", name="host")
+            input(type="text", class='col1', id="host", value=host, placeholder="Your node ip/name", name="host")
             label(for='port') Your Node JMX port:
-            input(type="text", id="port", value=port, placeholder="Your node JMX port", name="port")
-            input(type='submit', value='Get Log Configuration')
+            input(type="text", class='col2', id="port", value=port, placeholder="Your node JMX port", name="port")
+            input(type='submit', id='server', value='Get Log Configuration')
             if (error == true)
                 label(class='fadein') Cannot connect to the node
+
+          div(class='inputs')
+              label(for='logger') Log Name:
+              input(type="text", class='col1', id="logger", placeholder="Log name", name="logger")
+              label(for='level') Log Level:
+              input(type="text", class='col2', id="level", placeholder="Log level", name="level")
+              input(type='submit', id='add', value='Add Log')
+              if (error == true)
+                  label(class='fadein') Failed to add the log configuration
           table
             thead
               tr
@@ -44,8 +53,3 @@ block content
                       select(id="level"+k, name="level"+k)
                         for level in levels
                           option(selected=log[attr] == level) #{level}
-
-  script(type='text/javascript').
-        $(document).ready(function() {
-
-                            });
